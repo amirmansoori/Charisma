@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import MainLayout from "../components/common/layout";
 import Grid from "@mui/material/Unstable_Grid2";
 import ListContainer from "../components/common/customList";
@@ -16,7 +16,7 @@ import {
 } from "../slices/items";
 import { Button, Chip } from "@mui/material";
 
-const MainPage = () => {
+const MainPage = forwardRef(function MainPage(props, ref) {
   const dispatch: AppDispatch = useDispatch();
   const {
     users,
@@ -55,11 +55,21 @@ const MainPage = () => {
 
   return (
     <MainLayout>
-      <Grid container spacing={3} sx={{ height: "100%" }}>
-        <Grid xs={4} sx={{ height: "100%" }}>
+      <Grid container spacing={3}>
+        <Grid xs={4}>
           <ListContainer
             search
+            value={userFilter}
             searchData={(val: string) => setUserFilter(val)}
+            button={
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => setUserFilter("")}
+              >
+                clear filter
+              </Button>
+            }
           >
             {users.map((item) => {
               if (`${item.name} ${item.email}`.includes(userFilter))
@@ -74,10 +84,20 @@ const MainPage = () => {
             })}
           </ListContainer>
         </Grid>
-        <Grid xs={4} sx={{ height: "100%" }}>
+        <Grid xs={4}>
           <ListContainer
             search
+            value={postFilter}
             searchData={(val: string) => setPostFilter(val)}
+            button={
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => setPostFilter("")}
+              >
+                clear filter
+              </Button>
+            }
           >
             {posts.map((item) => {
               if (`${item.title} ${item.body}`.includes(postFilter))
@@ -92,17 +112,19 @@ const MainPage = () => {
             })}
           </ListContainer>
         </Grid>
-        <Grid xs={4} sx={{ height: "100%" }}>
-          <ListContainer>
-            <Button
-              variant="contained"
-              onClick={() => clearCart()}
-              color="error"
-              sx={{ marginBottom: "2rem", width: "100%" }}
-            >
-              clearCart
-            </Button>
-
+        <Grid xs={4}>
+          <ListContainer
+            button={
+              <Button
+                variant="contained"
+                onClick={clearCart}
+                color="error"
+                fullWidth
+              >
+                clear
+              </Button>
+            }
+          >
             {items.map((item, index) =>
               item.name ? (
                 <Chip
@@ -127,6 +149,6 @@ const MainPage = () => {
       </Grid>
     </MainLayout>
   );
-};
+});
 
 export default MainPage;

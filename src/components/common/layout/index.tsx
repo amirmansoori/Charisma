@@ -1,6 +1,7 @@
 import { Box, Theme } from "@mui/material";
 import React from "react";
-import { makeStyles } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import AppBar from "@mui/material/AppBar";
 
 interface IMainlayout {
   children: React.ReactNode;
@@ -9,19 +10,26 @@ interface IMainlayout {
 const useStyles: any = makeStyles((theme: Theme) => ({
   root: {
     background: theme.palette.grey[500],
-    width: "100vw",
-    height: "100%",
-    minHeight: "100vh",
-    maxHeight: "100vh",
-    padding: "1rem",
-    overflow: "hidden",
+    paddingTop: "1rem",
+    minHeight: "100%",
   },
 }));
 
 const MainLayout: React.FC<IMainlayout> = (props) => {
   const { children } = props;
   const classes = useStyles();
-  return <Box className={classes.root}>{children}</Box>;
+  return (
+    <Box overflow={"hidden"} height={1}>
+      <AppBar
+        position="static"
+        color="primary"
+        sx={{ padding: "1rem", textAlign: "center" }}
+      >
+        Charisma test
+      </AppBar>
+      <Box className={classes.root}>{children}</Box>
+    </Box>
+  );
 };
 
 export default MainLayout;
